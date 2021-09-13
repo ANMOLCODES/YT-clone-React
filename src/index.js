@@ -1,6 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
+import ReactDOM, { render } from 'react-dom';
 import SearchBar from './components/search_bar';
+import YTSearch from 'youtube-api-search';
 
 const API_KEY = 'AIzaSyDSSmL0Wuf43HJb3eeoHkw39O4mkpImGtA';
 
@@ -10,12 +11,27 @@ const API_KEY = 'AIzaSyDSSmL0Wuf43HJb3eeoHkw39O4mkpImGtA';
 // const App = function() { 
 //     return <div>Hi!</div>;
 // }
-const App = () => { //'const' or constant is a way to declare a var in JS but it will have constant value, we aren't going to assign any other value to it after this, () => is a way to declare a function in ES6
-    return( 
-        <div>
-            <SearchBar />
-        </div>
-    );
+class App extends Component { //'const' or constant is a way to declare a var in JS but it will have constant value, we aren't going to assign any other value to it after this, () => is a way to declare a function in ES6
+    constructor(props) {
+        super(props);
+
+        this.state = { videos: [ ] };
+    
+        // YTSearch({key: API_KEY, term: 'surfboards'}, function(data) {
+        YTSearch({key: API_KEY, term: 'surfboards'}, (videos)=> {
+            this.setState({videos: videos});
+            // this.setState({ videos }); same as above in ES6, only works when key and property have the same name 
+
+        });
+    }
+    
+    render() {
+        return( 
+            <div>
+                <SearchBar />
+            </div> 
+        );
+    }
 }
 
 //Take this component's HTML and put it on the page(in the DOM)
